@@ -6,12 +6,14 @@ import Message from './Message'
 import ArticleForm from './ArticleForm'
 import Spinner from './Spinner'
 import axios from 'axios'
+import { useEffect } from 'react'
 
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
 
 export default function App() {
 
+  
   
 
   // ✨ MVP can be achieved with these states
@@ -99,7 +101,7 @@ export default function App() {
           setArticles(data.articles)
           setMessage(data.message)
           setSpinnerOn(false)
-
+          
       }catch (error) {
         if(error?.response?.status === 401) {redirectToLogin()
         setSpinnerOn(false)
@@ -141,6 +143,7 @@ export default function App() {
       console.log("POST articles data: ", data)
       setMessage(data.message)
       setSpinnerOn(false)
+      
     })
     .catch(error => {
       if(error?.response?.status === 401) redirectToLogin()
@@ -215,8 +218,8 @@ export default function App() {
     })
     .then(data => {
       console.log("DELETE articles data: ", data)
-      //setMessage(data.message)
-      setArticles(articles)
+      
+     
       setSpinnerOn(false)
       setMessage(data.message)
       
@@ -224,7 +227,7 @@ export default function App() {
     }catch(error) {
       if(error?.response?.status === 401) {redirectToLogin()
       setSpinnerOn(false)
-      
+      setArticles(articles)
       }
     }
     

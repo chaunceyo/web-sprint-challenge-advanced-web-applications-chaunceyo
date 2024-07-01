@@ -15,7 +15,9 @@ export default function Articles({articles, getArticles, deleteArticle, currentA
      getArticles()
   }, [])
   
-  
+  useEffect( () => {
+    getArticles()
+  }, [articles.length])
   
   return (
     // ✨ fix the JSX: replace `Function.prototype` with actual functions
