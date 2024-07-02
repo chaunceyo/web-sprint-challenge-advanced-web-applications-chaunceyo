@@ -28,11 +28,11 @@ export default function ArticleForm({postArticle, updateArticle, currentArticle,
     // ✨ implement
     // We must submit a new post or update an existing one,
     // depending on the truthyness of the `currentArticle` prop.
-    console.log('currentArticle: ', currentArticle)
+    //console.log('currentArticle: ', currentArticle)
     const article = {title: values.title, text: values.text, topic: values.topic}
     const action = currentArticle? updateArticle(currentArticle.article_id, article) : postArticle(values)
     action
-
+    setValues(initialFormValues)
     
   }
 

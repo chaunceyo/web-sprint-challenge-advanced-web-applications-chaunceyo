@@ -6,15 +6,14 @@ import Message from './Message'
 import ArticleForm from './ArticleForm'
 import Spinner from './Spinner'
 import axios from 'axios'
-import { useEffect } from 'react'
+
 
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
 
 export default function App() {
 
-  
-  
+
 
   // ✨ MVP can be achieved with these states
   const [message, setMessage] = useState('')
@@ -22,6 +21,8 @@ export default function App() {
   const [currentArticleId, setCurrentArticleId] = useState()
   const [spinnerOn, setSpinnerOn] = useState(false)
 
+  
+  
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate()
   const redirectToLogin = () => { navigate("/")}
@@ -109,6 +110,7 @@ export default function App() {
         }
       }
     
+ 
     
   }
 
@@ -144,13 +146,15 @@ export default function App() {
       setMessage(data.message)
       setSpinnerOn(false)
       
+      
     })
     .catch(error => {
       if(error?.response?.status === 401) redirectToLogin()
       setSpinnerOn(false)
     })
     
-    
+    setArticles([...articles, article])
+  
   }
 
   const updateArticle = ( article_id, article ) => {
@@ -160,8 +164,7 @@ export default function App() {
     //FETCH AND ADD TO PROPS
     setMessage('')
     setSpinnerOn(true)
-    console.log('Article: ', article)
-    console.log('article_id: ', article_id)
+    
 
     fetch(`${articlesUrl}/${article_id}`, {
       method: 'PUT',
@@ -186,13 +189,18 @@ export default function App() {
       setMessage(data.message)
       setSpinnerOn(false)
       
-      
     })
     .catch(error => {
       if(error?.response?.status === 401) redirectToLogin()
       setSpinnerOn(false)
     })
-    
+    setArticles(articles.map(art=> {
+      if(art.article_id === article_id){
+        return article
+      }else{
+        return art
+      }
+    }))
 
   }
 
@@ -215,19 +223,19 @@ export default function App() {
         throw new Error("Can't DELETE article", res.status)
       }
       return res.json()
+
+      
     })
     .then(data => {
       console.log("DELETE articles data: ", data)
-      
-     
       setSpinnerOn(false)
       setMessage(data.message)
-      
+      setArticles(articles.filter(article => article.article_id !== article_id ))
     })
     }catch(error) {
       if(error?.response?.status === 401) {redirectToLogin()
       setSpinnerOn(false)
-      setArticles(articles)
+   
       }
     }
     
@@ -255,7 +263,7 @@ export default function App() {
           <Route path="/" element={<LoginForm login={login}/>} />
           <Route path="articles" element={
             <>
-              <ArticleForm 
+              <ArticleForm
                 currentArticle={currentArticleId && articles.find(a => a.article_id === currentArticleId)}
                 getArticles={getArticles}
                 postArticle={postArticle}
@@ -265,6 +273,7 @@ export default function App() {
                 />
               <Articles 
                 articles={articles}
+                setArticles={setArticles}
                 getArticles={getArticles}
                 postArticle={postArticle}
                 updateArticle={updateArticle}

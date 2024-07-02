@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PT from 'prop-types'
 
-export default function Articles({articles, getArticles, deleteArticle, currentArticleId, setCurrentArticleId}) {
+export default function Articles({articles,getArticles, deleteArticle, currentArticleId, setCurrentArticleId}) {
   // ✨ where are my props? Destructure them here
 
   // ✨ implement conditional logic: if no token exists
@@ -15,9 +15,6 @@ export default function Articles({articles, getArticles, deleteArticle, currentA
      getArticles()
   }, [])
   
-  useEffect( () => {
-    getArticles()
-  }, [articles.length])
   
   return (
     // ✨ fix the JSX: replace `Function.prototype` with actual functions
